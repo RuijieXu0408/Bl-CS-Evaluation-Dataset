@@ -2,9 +2,9 @@
 
 ## 📖 Overview
 
-This dataset accompanies our paper **"From Proximity to Precision: An Empirical Evaluation of Bluetooth Channel Sounding on Smartphones"** (submitted to *IPIN 2026*). It contains the complete set of ranging measurements collected with a commercial *smartphone (Google Pixel 10 Pro)* acting as the *Initiator* and a Nordic Semiconductor *nRF54L15* Development Kit acting as the *Reflector*, communicating via the Bluetooth 6.0 **Channel Sounding (CS)** protocol.
+This dataset accompanies our paper **"Beyond Proximity: Evaluating High-Precision Bluetooth Channel Sounding for Mobile Applications"** (submitted to *IPIN 2026*). It contains the complete set of ranging measurements collected with a commercial *smartphone (Google Pixel 10 Pro)* acting as the *Initiator* and a Nordic Semiconductor *nRF54L15* Development Kit acting as the *Reflector*, communicating via the Bluetooth 6.0 **Channel Sounding (CS)** protocol.
 
-To the best of our knowledge, this is the **first publicly released CS ranging dataset captured on commercial off-the-shelf (COTS) smartphone hardware**, covering both static and dynamic scenarios in indoor and outdoor environments.
+This dataset provides Bluetooth CS ranging measurements captured with a commercial off-the-shelf smartphone and covers static and dynamic scenarios in indoor and outdoor environments. The dataset is accompanied by timestamped UWB ground-truth measurements and analysis scripts.
 
 ## 🛰️ Experimental Setup
 
@@ -21,18 +21,19 @@ To the best of our knowledge, this is the **first publicly released CS ranging d
 
 ```
 dataset/
-├── GT/                          # Ground-truth-aligned raw CS measurements
+├── GT/                          # UWB ground-truth distance measurements
 │   ├── Static_*.csv
 │   ├── Dynamic_*.csv
 │   └── vis.py                   # Visualization script
-└── RangingFilter/               # Filtered CS outputs (post-processed)
+└── RangingFilter/               # Timestamped Android Bluetooth CS results
     ├── Static_*.csv
     └── Dynamic_*.csv
 ```
 
-- **`GT/`** — Raw CS distance samples paired with synchronized UWB ground-truth references, suitable for accuracy evaluation and algorithm training.
-- **`RangingFilter/`** — Filtered ranging traces (smoothed/denoised CS output), useful as a baseline against which new filters can be compared.
-- **`vis.py`** — Python script that reproduces the dataset overview figure shown below.
+- **`GT/`** — contains the reference distances measured by the co-located Qorvo DW3000 UWB system.
+- **`RangingFilter/`** — contains the application-level Bluetooth CS results returned by the Android API after duplicate timestamps were removed.
+- A CS file and its corresponding UWB ground-truth file use the same scenario filename. The analysis scripts align the two files by nearest timestamp with a maximum tolerance of 500 ms.
+- **`vis.py`** — visualizes the UWB ground-truth traces.
 
 ### File Naming Convention
 
@@ -57,14 +58,26 @@ Files follow the pattern:
 
 ## 📊 Data Format
 
-Each CSV file contains time-series ranging data with the following columns:
+### Bluetooth CS files (`RangingFilter/`)
+
+| Column | Description | Unit/values |
+| --- | --- | --- |
+| `Timestamp` | System timestamp associated with the API result | Date and time with millisecond resolution |
+| `Device Name` | Name of the Bluetooth CS reflector | Text |
+| `Address` | Bluetooth address recorded during the experiment | Text |
+| `Distance (m)` | Processed distance estimate returned by the Android Channel Sounding API | m |
+| `Confidence Level` | Categorical confidence returned by the Android API | `0`: low, `1`: medium, `2`: high |
+
+The Android API used in this measurement campaign exposed the timestamp, distance estimate, and categorical confidence level. It did not expose raw IQ samples, per-tone phase measurements, or a numerical distance uncertainty/standard deviation. The confidence level is therefore not interpreted as a calibrated error probability.
+
+### UWB ground-truth files (`GT/`)
 
 | Column | Description | Unit |
-| :--- | :--- | :--- |
-| `timestamp` | System timestamp of each CS measurement | HH:MM:SS.fff |
-| `raw_distance` | Raw distance estimate from the Android CS HAL | m |
-| `filtered_distance` | Smoothed/filtered distance (provided by the API/post-processing) | m |
-| `gt_distance` *(GT/ only)* | UWB-based ground-truth distance | m |
+| --- | --- | --- |
+| `Timestamp` | Timestamp of the UWB reference measurement | Date and time with millisecond resolution |
+| `Distance(m)` | Ground-truth distance measured using the Qorvo DW3000 system | m |
+
+Bluetooth CS and UWB data are intentionally stored in separate files. Files belonging to the same experiment have identical scenario filenames. During evaluation, each Bluetooth CS result is associated with the nearest UWB timestamp within a maximum tolerance of 500 ms.
 
 > ⚠️ Some dynamic scenarios contain occasional `NaN` rows corresponding to dropped CS subevents or lost links (especially at 50 m where SNR approaches the Bluetooth connectivity threshold).
 
