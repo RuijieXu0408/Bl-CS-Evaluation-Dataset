@@ -2,7 +2,7 @@
 
 ## 📖 Overview
 
-This dataset accompanies our paper **"Beyond Proximity: Evaluating High-Precision Bluetooth Channel Sounding for Mobile Applications"** (submitted to *IPIN 2026*). It contains the complete set of ranging measurements collected with a commercial *smartphone (Google Pixel 10 Pro)* acting as the *Initiator* and a Nordic Semiconductor *nRF54L15* Development Kit acting as the *Reflector*, communicating via the Bluetooth 6.0 **Channel Sounding (CS)** protocol.
+This dataset accompanies our paper **"Beyond Proximity: Evaluating High-Precision Bluetooth Channel Sounding for Mobile Applications"**, accepted for presentation at *IPIN 2026* (5--8 October 2026, Rome, Italy). It contains the complete set of ranging measurements collected with a commercial *smartphone (Google Pixel 10 Pro)* acting as the *Initiator* and a Nordic Semiconductor *nRF54L15* Development Kit acting as the *Reflector*, communicating via the Bluetooth 6.0 **Channel Sounding (CS)** protocol.
 
 This dataset provides Bluetooth CS ranging measurements captured with a commercial off-the-shelf smartphone and covers static and dynamic scenarios in indoor and outdoor environments. The dataset is accompanied by timestamped UWB ground-truth measurements and analysis scripts.
 
@@ -34,6 +34,10 @@ dataset/
 - **`RangingFilter/`** — contains the application-level Bluetooth CS results returned by the Android API after duplicate timestamps were removed.
 - A CS file and its corresponding UWB ground-truth file use the same scenario filename. The analysis scripts align the two files by nearest timestamp with a maximum tolerance of 500 ms.
 - **`vis.py`** — visualizes the UWB ground-truth traces.
+
+### Known Time-Window Difference
+
+For `Static_5Hz_10m_Indoor_Corridor.csv`, the Bluetooth CS log is the approximately two-minute segment used in the paper (2026-01-18 16:22:56 to 16:24:54; 704 rows), whereas the corresponding UWB file retains the longer ground-truth recording (16:18:08 to 16:27:25; 45,952 rows). This difference is intentional. Nearest-timestamp alignment with the stated 500 ms tolerance selects the UWB samples corresponding to the CS interval; UWB samples outside that interval remain unmatched and are not included in the reported error statistics.
 
 ### File Naming Convention
 
