@@ -25,15 +25,21 @@ dataset/
 │   ├── Static_*.csv
 │   ├── Dynamic_*.csv
 │   └── vis.py                   # Visualization script
-└── RangingFilter/               # Timestamped Android Bluetooth CS results
-    ├── Static_*.csv
-    └── Dynamic_*.csv
+├── RangingFilter/               # Timestamped Android Bluetooth CS results
+│   ├── Static_*.csv
+│   └── Dynamic_*.csv
+├── firmware/                    # Reflector firmware source (nRF54L15 DK)
+└── app/                         # Initiator Android app source
 ```
 
 - **`GT/`** — contains the reference distances measured by the co-located Qorvo DW3000 UWB system.
 - **`RangingFilter/`** — contains the application-level Bluetooth CS results returned by the Android API after duplicate timestamps were removed.
 - A CS file and its corresponding UWB ground-truth file use the same scenario filename. The analysis scripts align the two files by nearest timestamp with a maximum tolerance of 500 ms.
 - **`vis.py`** — visualizes the UWB ground-truth traces.
+- **`firmware/`** — source code of the Channel Sounding reflector firmware for the nRF54L15 DK, a modified copy of the nRF Connect SDK sample from Nordic Semiconductor. See [`firmware/README.md`](firmware/README.md).
+- **`app/`** — source code of the Android initiator app used to collect and log the CS measurements, a modified copy of nRF Toolbox from Nordic Semiconductor. See [`app/README.md`](app/README.md).
+
+The code in `firmware/` and `app/` is the current revision and includes reliability fixes made after the measurements were collected (January 2026); it is not identical to the builds used for the paper.
 
 ### Known Time-Window Difference
 
@@ -129,6 +135,13 @@ If you use this dataset, please cite our paper (to appear at **IPIN 2026**):
 ## 📜 License
 
 This dataset is released under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license. You are free to share and adapt the material for any purpose, provided proper attribution is given.
+
+The CC BY 4.0 license applies to the dataset only (`GT/`, `RangingFilter/`, and the figures). The source code is derived from Nordic Semiconductor software and keeps its original licenses:
+
+- `firmware/` — Nordic 5-Clause license (see [`firmware/LICENSE`](firmware/LICENSE)); it may only be used with a Nordic Semiconductor integrated circuit.
+- `app/` — BSD 3-Clause license (see [`app/LICENSE`](app/LICENSE)).
+
+This repository is not affiliated with or endorsed by Nordic Semiconductor.
 
 ## ✉️ Contact
 
