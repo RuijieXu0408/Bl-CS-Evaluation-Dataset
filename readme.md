@@ -12,7 +12,7 @@ This dataset provides Bluetooth CS ranging measurements captured with a commerci
 | :--- | :--- |
 | Initiator | Google Pixel 10 Pro (Android 16, BT 6.0 HAL) |
 | Reflector | Nordic Semiconductor nRF54L15 DK |
-| Ground Truth | Qorvo DW3000 UWB modules (mechanically co-located with BT antennas) |
+| Ground Truth | Qorvo DW1000 UWB modules (mechanically co-located with BT antennas) |
 | Frequency Band | 2.4 GHz ISM, up to 72 channels |
 | Update Rates | 0.2 Hz, 5 Hz, 10 Hz |
 | Environments | Outdoor grassland (60 m × 30 m, LOS) / Indoor corridor (2.5 m wide, multipath-rich) |
@@ -32,7 +32,7 @@ dataset/
 └── app/                         # Initiator Android app source
 ```
 
-- **`GT/`** — contains the reference distances measured by the co-located Qorvo DW3000 UWB system.
+- **`GT/`** — contains the reference distances measured by the co-located Qorvo DW1000 UWB system.
 - **`RangingFilter/`** — contains the application-level Bluetooth CS results returned by the Android API after duplicate timestamps were removed.
 - A CS file and its corresponding UWB ground-truth file use the same scenario filename. The analysis scripts align the two files by nearest timestamp with a maximum tolerance of 500 ms.
 - **`vis.py`** — visualizes the UWB ground-truth traces.
@@ -85,7 +85,7 @@ The Android API used in this measurement campaign exposed the timestamp, distanc
 | Column | Description | Unit |
 | --- | --- | --- |
 | `Timestamp` | Timestamp of the UWB reference measurement | Date and time with millisecond resolution |
-| `Distance(m)` | Ground-truth distance measured using the Qorvo DW3000 system | m |
+| `Distance(m)` | Ground-truth distance measured using the Qorvo DW1000 system | m |
 
 Bluetooth CS and UWB data are intentionally stored in separate files. Files belonging to the same experiment have identical scenario filenames. During evaluation, each Bluetooth CS result is associated with the nearest UWB timestamp within a maximum tolerance of 500 ms.
 
