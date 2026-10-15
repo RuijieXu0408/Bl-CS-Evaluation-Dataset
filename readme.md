@@ -122,11 +122,9 @@ If you use this dataset, please cite our paper (to appear at **IPIN 2026**):
 
 ```bibtex
 @inproceedings{xu2026ipin,
-  title     = {From Proximity to Precision: An Empirical Evaluation of
-               Bluetooth Channel Sounding on Smartphones},
+  title     = {Beyond Proximity: Evaluating High-Precision Bluetooth Channel Sounding for Mobile Applications},
   author    = {Ruijie Xu, Penghui Xu, Cheng Chang, Tung-Hao Hsu, and Li-Ta Hsu},
-  booktitle = {Proc. International Conference on Indoor Positioning and
-               Indoor Navigation (IPIN)},
+  booktitle = {Proc. International Conference on Indoor Positioning and Indoor Navigation (IPIN)},
   year      = {2026},
   note      = {To appear}
 }
